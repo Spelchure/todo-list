@@ -1,9 +1,3 @@
-/*
-TODO: Real database
-TODO: Unit-Integration test
-TODO: eslint, prettier
-*/
-
 import sequelize from "./db";
 import createRestApplication from "./app";
 
