@@ -5,7 +5,8 @@
   "main": "main.ts",
   "scripts": {
     "dev": "nodemon main.ts",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -15,13 +16,15 @@
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/uuid": "^9.0.1",
-    "nodemon": "^2.0.22",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.4",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
     "eslint": "^8.41.0",
-    "eslint-config-prettier": "^8.8.0"
+    "eslint-config-prettier": "^8.8.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
