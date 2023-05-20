@@ -12,7 +12,7 @@ export enum LogTypes {
 export class Logging {
   private _prefix: string;
 
-  constructor(prefix: string = "") {
+  constructor(prefix = "") {
     this._prefix = prefix;
   }
 

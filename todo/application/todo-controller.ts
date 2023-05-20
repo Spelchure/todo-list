@@ -36,7 +36,7 @@ export class TodoController implements interfaces.Controller {
   @httpPost('/')
   private async createNew(
     @request() req: Request,
-    @response() res: Response,
+    @response() _: Response,
     @next() __: NextFunction
   ) {
     const {title, description}: CreateTodoRequest = req.body;
