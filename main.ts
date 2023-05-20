@@ -1,5 +1,5 @@
-import sequelize from "./db";
-import createRestApplication from "./app";
+import sequelize from './db';
+import createRestApplication from './app';
 
 const startServer = async () => {
   const port = 9092;

@@ -4,8 +4,8 @@ import {
   InferCreationAttributes,
   CreationOptional,
   DataTypes,
-} from "sequelize";
-import sequelize from "../../db";
+} from 'sequelize';
+import sequelize from '../../db';
 
 export class TodoModel extends Model<
   InferAttributes<TodoModel>,
@@ -32,5 +32,5 @@ TodoModel.init(
     creationDate: DataTypes.STRING,
     lastUpdatedAt: DataTypes.STRING,
   },
-  { sequelize }
+  {sequelize}
 );

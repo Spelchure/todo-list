@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import TodoApplicationService from "./todo-app-service";
+import {Request, Response, NextFunction} from 'express';
+import TodoApplicationService from './todo-app-service';
 import {
   interfaces,
   request,
@@ -8,23 +8,23 @@ import {
   controller,
   httpGet,
   httpPost,
-} from "inversify-express-utils";
-import TYPES from "../../types";
-import { inject } from "inversify";
+} from 'inversify-express-utils';
+import TYPES from '../../types';
+import {inject} from 'inversify';
 
 interface CreateTodoRequest {
   title: string;
   description: string;
 }
 
-@controller("/todo")
+@controller('/todo')
 export class TodoController implements interfaces.Controller {
   constructor(
     @inject(TYPES.TodoApplicationService)
     private todoService: TodoApplicationService
   ) {}
 
-  @httpGet("/")
+  @httpGet('/')
   private async index(
     @request() _: Request,
     @response() res: Response,
@@ -33,14 +33,13 @@ export class TodoController implements interfaces.Controller {
     return res.json(await this.todoService.listAll());
   }
 
-  @httpPost("/")
+  @httpPost('/')
   private async createNew(
     @request() req: Request,
     @response() res: Response,
     @next() __: NextFunction
   ) {
-    const { title, description }: CreateTodoRequest = req.body;
-    // TODO: validate schema
+    const {title, description}: CreateTodoRequest = req.body;
     await this.todoService.createNew(title, description);
   }
 }

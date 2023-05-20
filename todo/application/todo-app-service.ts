@@ -1,9 +1,9 @@
-import { inject, injectable } from "inversify";
-import { Todo } from "../domain/todo";
-import TYPES from "../../types";
-import ITodoRepository from "../domain/todo-repository";
-import { Timestamp } from "../../shared/timestamp";
-import { Logging } from "../../shared/logging";
+import {inject, injectable} from 'inversify';
+import {Todo} from '../domain/todo';
+import TYPES from '../../types';
+import ITodoRepository from '../domain/todo-repository';
+import {Timestamp} from '../../shared/timestamp';
+import {Logging} from '../../shared/logging';
 
 @injectable()
 export default class TodoApplicationService {
@@ -13,7 +13,7 @@ export default class TodoApplicationService {
   ) {}
 
   public async listAll() {
-    this._logger.logInfo("Listing all");
+    this._logger.logInfo('Listing all');
     return await this.todoRepository.getAll();
   }
   public async createNew(title: string, description: string) {
