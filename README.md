@@ -26,3 +26,4 @@ npm run lint
 
 - Dependency Injection with _inversify.js_
 - Domain Driven Design
+- Hexagonal Architecture
