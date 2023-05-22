@@ -9,6 +9,7 @@ import * as bodyParser from 'body-parser';
 import TYPES from './types';
 import './todo/application/todo-controller';
 import {Logging} from './shared/logging';
+import errorHandler from './error-handler';
 
 const container = new Container();
 
@@ -28,6 +29,9 @@ export default function createRestApplication() {
   server.setConfig(app => {
     app.use(cors());
     app.use(bodyParser.json());
+  });
+  server.setErrorConfig(app => {
+    app.use(errorHandler);
   });
 
   return server.build();
