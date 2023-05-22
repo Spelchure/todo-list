@@ -22,4 +22,7 @@ npm run build
 npm run lint
 ```
 
-## Tools/Stuff Used
+## Tools/Technologies Used
+
+- Dependency Injection with _inversify.js_
+- Domain Driven Design
