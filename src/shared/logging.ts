@@ -1,18 +1,18 @@
-import { injectable } from "inversify";
+import {injectable} from 'inversify';
 
 export type LogMessage = string;
 
 export enum LogTypes {
-  INFO = "INFO",
-  WARN = "WARN",
-  ERROR = "ERROR",
+  INFO = 'INFO',
+  WARN = 'WARN',
+  ERROR = 'ERROR',
 }
 
 @injectable()
 export class Logging {
   private _prefix: string;
 
-  constructor(prefix = "") {
+  constructor(prefix = '') {
     this._prefix = prefix;
   }
 

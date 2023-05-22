@@ -2,8 +2,8 @@ import {inject, injectable} from 'inversify';
 import {Todo} from '../domain/todo';
 import TYPES from '../../types';
 import ITodoRepository from '../domain/todo-repository';
-import {Timestamp} from '../../shared/timestamp';
-import {Logging} from '../../shared/logging';
+import {Timestamp} from '../../../src/shared/timestamp';
+import {Logging} from '../../../src/shared/logging';
 
 @injectable()
 export default class TodoApplicationService {

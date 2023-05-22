@@ -2,10 +2,10 @@
   "name": "todo-app",
   "version": "1.0.0",
   "description": "",
-  "main": "main.ts",
+  "main": "src/main.ts",
   "scripts": {
-    "dev": "nodemon main.ts",
-    "lint": "eslint . --ext .ts",
+    "dev": "nodemon src/main.ts",
+    "lint": "eslint ./src --ext .ts",
     "prepare": "husky install"
   },
   "keywords": [],
