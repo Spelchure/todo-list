@@ -131,3 +131,6 @@ dist
 
 # We are using npm as npm client
 yarn.lock
+
+#
+build
