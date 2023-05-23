@@ -1,9 +1,9 @@
 import {injectable} from 'inversify';
-import {UUIDGenerator} from '../../shared/unique-id';
-import ITodoRepository from '../domain/todo-repository';
+import {UUIDGenerator} from '@/shared/unique-id';
+import ITodoRepository from '@/todo/domain/todo-repository';
 import {TodoModel} from './todo-orm-model';
-import {Todo, TodoUniqueID} from '../domain/todo';
-import {Timestamp} from '../../shared/timestamp';
+import {Todo, TodoUniqueID} from '@/todo/domain/todo';
+import {Timestamp} from '@/shared/timestamp';
 
 @injectable()
 export class SqliteRepository implements ITodoRepository {

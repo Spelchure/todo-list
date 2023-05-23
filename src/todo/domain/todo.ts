@@ -1,4 +1,4 @@
-import {Timestamp} from '../../shared/timestamp';
+import {Timestamp} from '@/shared/timestamp';
 import assert from 'assert';
 
 export type TodoUniqueID = string;

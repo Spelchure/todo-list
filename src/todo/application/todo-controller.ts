@@ -9,7 +9,7 @@ import {
   httpGet,
   httpPost,
 } from 'inversify-express-utils';
-import TYPES from '../../types';
+import TYPES from '@/types';
 import {inject} from 'inversify';
 
 interface CreateTodoRequest {
