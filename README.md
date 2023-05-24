@@ -6,6 +6,8 @@ Simple NodeJS REST Application with some patterns
 
 ### Development
 
+Please define your variables in `.env` according to `.env.example`
+
 ```sh
 npm run dev
 ```
@@ -28,3 +30,4 @@ npm run lint
 - Domain Driven Design
 - Hexagonal Architecture
 - Webpack, WebpackShellPlugin, WebpackNodeExternals
+- Dotenv
