@@ -6,6 +6,7 @@ import TYPES from './types';
 import Configuration from './configuration';
 import {Logging} from './shared/logging';
 import './todo/application/todo-controller';
+import {ValidationResultHandler} from './shared/validation-result-handler';
 
 const container = new Container();
 
@@ -21,6 +22,11 @@ container
 container
   .bind<Configuration>(TYPES.Configuration)
   .to(Configuration)
+  .inSingletonScope();
+
+container
+  .bind<ValidationResultHandler>(ValidationResultHandler)
+  .toSelf()
   .inSingletonScope();
 
 container.bind<Logging>(TYPES.Logging).to(Logging);

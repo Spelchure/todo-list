@@ -11,6 +11,8 @@ import {
 } from 'inversify-express-utils';
 import TYPES from '@/types';
 import {inject} from 'inversify';
+import {createTodoValidator} from './todo-validators';
+import {ValidationResultHandler} from '@/shared/validation-result-handler';
 
 interface CreateTodoRequest {
   title: string;
@@ -33,7 +35,7 @@ export class TodoController implements interfaces.Controller {
     return res.json(await this.todoService.listAll());
   }
 
-  @httpPost('/')
+  @httpPost('/', ...createTodoValidator, ValidationResultHandler)
   private async createNew(
     @request() req: Request,
     @response() _: Response,
