@@ -134,3 +134,6 @@ yarn.lock
 
 #
 build
+
+# ignore key files
+*.pem

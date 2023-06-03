@@ -9,7 +9,7 @@ const startServer = async () => {
   const config = container.get<Configuration>(TYPES.Configuration);
   const port = config.get<number>('port');
   await sequelize.sync();
-  const app = createRestApplication();
+  const app = createRestApplication(config);
   app.listen(port);
 };
 

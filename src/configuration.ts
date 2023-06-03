@@ -14,8 +14,11 @@ export default class Configuration {
       process.env.PORT !== undefined,
       'Please specify PORT in environment'
     );
+
     this._configParams = {
       port: process.env.PORT,
+      cert: process.env.CERT_FILE,
+      privkey: process.env.PRIVKEY_FILE,
     };
   }
 
