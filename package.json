@@ -5,6 +5,7 @@
   "main": "src/main.ts",
   "scripts": {
     "dev": "webpack --watch --config webpack.config.dev.ts",
+    "build:dev": "webpack --config webpack.config.dev.ts",
     "build": "webpack --config webpack.config.prod.ts",
     "watch:build": "nodemon -r dotenv/config build/main.js --watch build",
     "lint": "eslint ./src --ext .ts",
