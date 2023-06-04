@@ -3,7 +3,8 @@ import nodeExternals from 'webpack-node-externals';
 import {Configuration} from 'webpack';
 import WebpackShellPluginNext from 'webpack-shell-plugin-next';
 
-const getConfig = (): Configuration => {
+const getConfig = (env: {WEBPACK_WATCH: boolean}): Configuration => {
+  const isInWatchingMode = env.WEBPACK_WATCH === true;
   return {
     entry: './src/main.ts',
     target: 'node',
@@ -16,11 +17,13 @@ const getConfig = (): Configuration => {
           blocking: true,
           parallel: false,
         },
-        onBuildEnd: {
-          scripts: ['npm run watch:build'],
-          blocking: false,
-          parallel: true,
-        },
+        onBuildEnd: isInWatchingMode
+          ? {
+              scripts: ['npm run watch:build'],
+              blocking: false,
+              parallel: true,
+            }
+          : {},
       }),
     ],
     module: {
