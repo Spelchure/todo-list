@@ -39,3 +39,4 @@ npm run lint
 - Hexagonal Architecture
 - Webpack, WebpackShellPlugin, WebpackNodeExternals
 - Dotenv
+- Docker, Docker Compose
