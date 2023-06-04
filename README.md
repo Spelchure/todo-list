@@ -12,6 +12,14 @@ Please define your variables in `.env` according to `.env.example`
 npm run dev
 ```
 
+### Running in Development with `Docker Compose`
+
+```sh
+npm run build:dev
+docker compose up -f Development.docker-compose.yml -d
+# For cleaning: docker compose -f Development.docker-compose.yml down -v
+```
+
 ### Production build
 
 ```

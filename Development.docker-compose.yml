@@ -1,0 +1,9 @@
+---
+version: '3.9'
+services:
+  todo-list:
+    build:
+      context: .
+      dockerfile: Development.dockerfile
+    ports:
+      - '${PORT}:8080'
