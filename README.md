@@ -40,6 +40,24 @@ docker compose -f Production.docker-compose.yml up -d
 # For cleaning: docker compose -f Production.docker-compose down -v
 ```
 
+### Running in Production with `Minikube`
+
+```sh
+# For minikube activate environment
+eval $(minikube -p minikube docker-env)
+# Generate SSL certificate and private key file like above
+# Build production image
+docker build -f Production.dockerfile . -t todo-list \
+  --build-arg="CERT_FILE_PATH=cert.pem" \
+  --build-arg="PRIVKEY_FILE_PATH=cert_priv.pem"
+# Apply k8s configuration
+kubectl create -f deploy/todo-list.yml
+# Get minikube ip address
+minikube ip
+# Test it
+curl -k -X GET https://<minikube-ip-address>:30100/todo
+```
+
 ### Lint
 
 ```
@@ -54,3 +72,4 @@ npm run lint
 - Webpack, WebpackShellPlugin, WebpackNodeExternals
 - Dotenv
 - Docker, Docker Compose
+- Minikube, K8S

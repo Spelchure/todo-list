@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-list
+  labels:
+    app: todo-list
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-list
+  template:
+    metadata:
+      labels:
+        app: todo-list
+    spec:
+      containers:
+        - name: todo-list
+          image: todo-list
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-list-service
+spec:
+  type: NodePort    # Do not use in production
+  selector:
+    app: todo-list
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30100
