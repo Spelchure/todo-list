@@ -5,4 +5,5 @@ export default interface ITodoRepository {
   getAll: () => Promise<Todo[]>;
   save: (todo: Todo) => Promise<void>;
   delete: (id: TodoUniqueID) => Promise<void>;
+  update: (todo: Partial<Todo>) => Promise<void>;
 }

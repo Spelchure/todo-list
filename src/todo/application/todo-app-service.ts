@@ -30,4 +30,9 @@ export default class TodoApplicationService {
   public async deleteWithID(id: TodoUniqueID) {
     await this.todoRepository.delete(id);
   }
+  public async update(todo: Partial<Todo>) {
+    if (todo.id === null)
+      throw Error('FATAL: Todo ID is null, validator not working properly!');
+    await this.todoRepository.update(todo);
+  }
 }

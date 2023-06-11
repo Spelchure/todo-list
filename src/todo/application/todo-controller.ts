@@ -9,10 +9,15 @@ import {
   httpGet,
   httpPost,
   httpDelete,
+  httpPut,
 } from 'inversify-express-utils';
 import TYPES from '@/types';
 import {inject} from 'inversify';
-import {createTodoValidator, deleteTodoValidator} from './todo-validators';
+import {
+  createTodoValidator,
+  deleteTodoValidator,
+  updateTodoValidator,
+} from './todo-validators';
 import {ValidationResultHandler} from '@/shared/validation-result-handler';
 import {TodoUniqueID} from '../domain/todo';
 
@@ -59,5 +64,14 @@ export class TodoController implements interfaces.Controller {
   ) {
     const {id}: DeleteTodoRequest = req.body;
     await this.todoService.deleteWithID(id);
+  }
+
+  @httpPut('/', ...updateTodoValidator, ValidationResultHandler)
+  private async update(
+    @request() req: Request,
+    @response() _: Response,
+    @next() __: NextFunction
+  ) {
+    await this.todoService.update(req.body);
   }
 }

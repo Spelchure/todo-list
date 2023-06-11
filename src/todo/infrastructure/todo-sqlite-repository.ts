@@ -4,6 +4,7 @@ import ITodoRepository from '@/todo/domain/todo-repository';
 import {TodoModel} from './todo-orm-model';
 import {Todo, TodoUniqueID} from '@/todo/domain/todo';
 import {Timestamp} from '@/shared/timestamp';
+import assert from 'assert';
 
 @injectable()
 export class SqliteRepository implements ITodoRepository {
@@ -27,11 +28,25 @@ export class SqliteRepository implements ITodoRepository {
   }
 
   public async delete(id: TodoUniqueID) {
-    const todo = await TodoModel.findOne({where: {uniqueID: id}});
+    const todo = await this._findByUniqueID(id);
     // TODO: Should error typed domain error
     if (todo !== null) {
       await todo.destroy();
     }
+  }
+
+  public async update(todo: Partial<Todo>) {
+    assert(todo.id !== null, 'Todo.id passed as null!');
+    const _todo = await this._findByUniqueID(todo.id!);
+    // TODO: Should error typed domain error
+    if (_todo !== null) {
+      const {title, description} = todo;
+      await _todo.update({title, description});
+    }
+  }
+
+  private async _findByUniqueID(id: TodoUniqueID) {
+    return TodoModel.findOne({where: {uniqueID: id}});
   }
 
   // TODO: use data mapper pattern

@@ -90,6 +90,33 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Update a todo",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"62e20fff-353d-4f9b-b199-e0f4c56fcd61\",\n    \"description\": \"Updated description\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9092/todo",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"todo"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
