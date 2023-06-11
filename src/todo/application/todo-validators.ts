@@ -8,3 +8,7 @@ export const createTodoValidator = [
     .isString()
     .withMessage('Description is required and should be string'),
 ];
+
+export const deleteTodoValidator = [
+  body('id').isUUID().withMessage('Todo id is required for deletion'),
+];

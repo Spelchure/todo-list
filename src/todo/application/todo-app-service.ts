@@ -1,5 +1,5 @@
 import {inject, injectable} from 'inversify';
-import {Todo} from '@/todo/domain/todo';
+import {Todo, TodoUniqueID} from '@/todo/domain/todo';
 import TYPES from '@/types';
 import ITodoRepository from '@/todo/domain/todo-repository';
 import {Timestamp} from '@/shared/timestamp';
@@ -26,5 +26,8 @@ export default class TodoApplicationService {
       description
     );
     await this.todoRepository.save(todo);
+  }
+  public async deleteWithID(id: TodoUniqueID) {
+    await this.todoRepository.delete(id);
   }
 }

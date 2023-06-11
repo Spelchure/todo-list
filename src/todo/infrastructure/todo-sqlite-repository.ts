@@ -26,6 +26,14 @@ export class SqliteRepository implements ITodoRepository {
     });
   }
 
+  public async delete(id: TodoUniqueID) {
+    const todo = await TodoModel.findOne({where: {uniqueID: id}});
+    // TODO: Should error typed domain error
+    if (todo !== null) {
+      await todo.destroy();
+    }
+  }
+
   // TODO: use data mapper pattern
   private convertTodoModelToTodo(todoModel: TodoModel) {
     return new Todo(

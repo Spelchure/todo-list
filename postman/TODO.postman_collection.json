@@ -7,6 +7,20 @@
 	"item": [
 		{
 			"name": "List all todos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.environment.get(\"variable_key\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -30,7 +44,34 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\":\"ok\",\n    \"description\" :\"okkk\"\n}",
+					"raw": "{\n    \"title\":\"This is my TODO\",\n    \"description\" :\"This is todo description\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9092/todo",
+					"host": [
+						"localhost"
+					],
+					"port": "9092",
+					"path": [
+						"todo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a todo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"ba04a9d3-17eb-45ff-9aab-60129ca897b7\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
