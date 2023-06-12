@@ -37,6 +37,7 @@ export class SqliteRepository implements ITodoRepository {
 
   public async update(todo: Partial<Todo>) {
     assert(todo.id !== null, 'Todo.id passed as null!');
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const _todo = await this._findByUniqueID(todo.id!);
     // TODO: Should error typed domain error
     if (_todo !== null) {
