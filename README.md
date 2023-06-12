@@ -1,3 +1,5 @@
+![](https://github.com/Spelchure/todo-list/actions/workflows/ci.yml/badge.svg)
+
 # TODO LIST
 
 Simple NodeJS REST Application with some patterns
