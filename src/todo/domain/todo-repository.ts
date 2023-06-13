@@ -6,5 +6,5 @@ export default interface ITodoRepository {
   getAll: () => Promise<Todo[]>;
   save: (todo: Todo) => Promise<Todo>;
   delete: (id: TodoUniqueID) => Promise<Todo | EntityNotFoundError>;
-  update: (todo: Partial<Todo>) => Promise<void>;
+  update: (todo: Partial<Todo>) => Promise<Todo | EntityNotFoundError>;
 }

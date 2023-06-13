@@ -35,18 +35,26 @@ export class SqliteRepository implements ITodoRepository {
       await todo.destroy();
       return this._convertTodoModelToTodo(todo);
     }
-    return new EntityNotFoundError(`Cannot find todo with id: ${id}`);
+    return this._entityNotFoundError(id);
   }
 
   public async update(todo: Partial<Todo>) {
     assert(todo.id !== null, 'Todo.id passed as null!');
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const _todo = await this._findByUniqueID(todo.id!);
-    // TODO: Should error typed domain error
+    const id: string = todo.id!;
+    const _todo = await this._findByUniqueID(id);
+
     if (_todo !== null) {
       const {title, description} = todo;
-      await _todo.update({title, description});
+      const result = await _todo.update({title, description});
+      return this._convertTodoModelToTodo(result);
+    } else {
+      return this._entityNotFoundError(id);
     }
+  }
+
+  private _entityNotFoundError(id: string) {
+    return new EntityNotFoundError(`Cannot find todo with id: ${id}`);
   }
 
   private async _findByUniqueID(id: TodoUniqueID) {

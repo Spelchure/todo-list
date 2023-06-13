@@ -78,9 +78,15 @@ export class TodoController implements interfaces.Controller {
   @httpPut('/', ...updateTodoValidator, ValidationResultHandler)
   private async update(
     @request() req: Request,
-    @response() _: Response,
+    @response() res: Response,
     @next() __: NextFunction
   ) {
-    await this.todoService.update(req.body);
+    const result = await this.todoService.update(req.body);
+
+    if (result instanceof EntityNotFoundError) {
+      return clientErrorResponse(res, result);
+    } else {
+      return res.json({updatedTodo: result});
+    }
   }
 }
