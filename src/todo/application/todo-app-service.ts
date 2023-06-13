@@ -25,7 +25,7 @@ export default class TodoApplicationService {
       new Timestamp(),
       description
     );
-    await this.todoRepository.save(todo);
+    return await this.todoRepository.save(todo);
   }
   public async deleteWithID(id: TodoUniqueID) {
     await this.todoRepository.delete(id);

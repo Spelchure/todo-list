@@ -49,11 +49,12 @@ export class TodoController implements interfaces.Controller {
   @httpPost('/', ...createTodoValidator, ValidationResultHandler)
   private async createNew(
     @request() req: Request,
-    @response() _: Response,
+    @response() res: Response,
     @next() __: NextFunction
   ) {
     const {title, description}: CreateTodoRequest = req.body;
-    await this.todoService.createNew(title, description);
+    const createdTodo = await this.todoService.createNew(title, description);
+    return res.status(201).json({createdTodo});
   }
 
   @httpDelete('/', ...deleteTodoValidator, ValidationResultHandler)

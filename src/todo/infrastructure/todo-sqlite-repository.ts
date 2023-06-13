@@ -14,17 +14,18 @@ export class SqliteRepository implements ITodoRepository {
 
   public async getAll(): Promise<Todo[]> {
     const todos = await TodoModel.findAll();
-    return todos.map(this.convertTodoModelToTodo);
+    return todos.map(this._convertTodoModelToTodo);
   }
 
   public async save(todo: Todo) {
-    await TodoModel.create({
+    const createdTodo = await TodoModel.create({
       uniqueID: todo.id,
       title: todo.title,
       description: todo.description,
       creationDate: todo.creationDate.toString(),
       lastUpdatedAt: todo.lastUpdated.toString(),
     });
+    return this._convertTodoModelToTodo(createdTodo);
   }
 
   public async delete(id: TodoUniqueID) {
@@ -50,8 +51,7 @@ export class SqliteRepository implements ITodoRepository {
     return TodoModel.findOne({where: {uniqueID: id}});
   }
 
-  // TODO: use data mapper pattern
-  private convertTodoModelToTodo(todoModel: TodoModel) {
+  private _convertTodoModelToTodo(todoModel: TodoModel) {
     return new Todo(
       todoModel.uniqueID.toString(),
       todoModel.title,
