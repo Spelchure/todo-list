@@ -28,7 +28,8 @@ export default class TodoApplicationService {
     return await this.todoRepository.save(todo);
   }
   public async deleteWithID(id: TodoUniqueID) {
-    await this.todoRepository.delete(id);
+    // if result instanceof EntityNotFoundError then log.warning( attempt ...
+    return await this.todoRepository.delete(id);
   }
   public async update(todo: Partial<Todo>) {
     if (todo.id === null)

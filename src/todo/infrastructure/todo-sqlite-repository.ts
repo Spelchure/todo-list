@@ -5,6 +5,7 @@ import {TodoModel} from './todo-orm-model';
 import {Todo, TodoUniqueID} from '@/todo/domain/todo';
 import {Timestamp} from '@/shared/timestamp';
 import assert from 'assert';
+import {EntityNotFoundError} from '@/shared/error/error';
 
 @injectable()
 export class SqliteRepository implements ITodoRepository {
@@ -30,10 +31,11 @@ export class SqliteRepository implements ITodoRepository {
 
   public async delete(id: TodoUniqueID) {
     const todo = await this._findByUniqueID(id);
-    // TODO: Should error typed domain error
     if (todo !== null) {
       await todo.destroy();
+      return this._convertTodoModelToTodo(todo);
     }
+    return new EntityNotFoundError(`Cannot find todo with id: ${id}`);
   }
 
   public async update(todo: Partial<Todo>) {

@@ -20,6 +20,8 @@ import {
 } from './todo-validators';
 import {ValidationResultHandler} from '@/shared/validation-result-handler';
 import {TodoUniqueID} from '../domain/todo';
+import {EntityNotFoundError} from '@/shared/error/error';
+import {clientErrorResponse} from '@/shared/client-error-response';
 
 interface CreateTodoRequest {
   title: string;
@@ -60,11 +62,17 @@ export class TodoController implements interfaces.Controller {
   @httpDelete('/', ...deleteTodoValidator, ValidationResultHandler)
   private async delete(
     @request() req: Request,
-    @response() _: Response,
+    @response() res: Response,
     @next() __: NextFunction
   ) {
     const {id}: DeleteTodoRequest = req.body;
-    await this.todoService.deleteWithID(id);
+    const result = await this.todoService.deleteWithID(id);
+
+    if (result instanceof EntityNotFoundError) {
+      return clientErrorResponse(res, result);
+    } else {
+      return res.json({deletedTodo: result});
+    }
   }
 
   @httpPut('/', ...updateTodoValidator, ValidationResultHandler)
