@@ -4,6 +4,7 @@ import container from '@/container';
 import TYPES from '@/types';
 import Configuration from '@/configuration';
 import sequelize from '@/db';
+import {Model, QueryOptionsWithModel} from 'sequelize';
 
 class TextFixture {
   private readonly _app: Express.Application;
@@ -23,7 +24,13 @@ class TextFixture {
     await sequelize.sync();
   }
 
-  public async executeQuery(query: string) {
+  public async executeQuery(
+    query: string,
+    params?: QueryOptionsWithModel<Model<any, any>>
+  ) {
+    if (params !== undefined) {
+      return await sequelize.query(query, {...params});
+    }
     return await sequelize.query(query);
   }
 }
