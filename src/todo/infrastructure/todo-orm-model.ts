@@ -32,5 +32,5 @@ TodoModel.init(
     creationDate: DataTypes.STRING,
     lastUpdatedAt: DataTypes.STRING,
   },
-  {sequelize}
+  {sequelize, timestamps: false}
 );
