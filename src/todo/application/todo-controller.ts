@@ -45,7 +45,11 @@ export class TodoController implements interfaces.Controller {
     @response() res: Response,
     @next() __: NextFunction
   ) {
-    return res.json(await this.todoService.listAll());
+    const allTodos = await this.todoService.listAll();
+    const serialized = allTodos.map(todo =>
+      this.todoService.serializeTodo(todo)
+    );
+    return res.json({todos: serialized});
   }
 
   @httpPost('/', ...createTodoValidator, ValidationResultHandler)
@@ -56,7 +60,8 @@ export class TodoController implements interfaces.Controller {
   ) {
     const {title, description}: CreateTodoRequest = req.body;
     const createdTodo = await this.todoService.createNew(title, description);
-    return res.status(201).json({createdTodo});
+    const serialized = this.todoService.serializeTodo(createdTodo);
+    return res.status(201).json({created: serialized});
   }
 
   @httpDelete('/', ...deleteTodoValidator, ValidationResultHandler)

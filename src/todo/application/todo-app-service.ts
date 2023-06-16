@@ -36,4 +36,14 @@ export default class TodoApplicationService {
       throw Error('FATAL: Todo ID is null, validator not working properly!');
     return await this.todoRepository.update(todo);
   }
+
+  public serializeTodo(todo: Todo) {
+    return {
+      id: todo.id,
+      title: todo.title,
+      description: todo.description,
+      creationDate: todo.creationDate.toString(),
+      lastUpdated: todo.lastUpdated.toString(),
+    };
+  }
 }
