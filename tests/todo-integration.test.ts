@@ -1,40 +1,68 @@
-/*
- * Migrate empty DB
- * Create todo
- * should return created todo  with ID
- * todo should be in db -> execute query to db for looking
- */
+import {fixture} from './text-fixture';
+import {UUIDGenerator} from '../src/shared/unique-id';
+import request from 'supertest';
+import {Timestamp} from '@/shared/timestamp';
+import {Todo} from '@/todo/domain/todo';
+import {expect} from 'chai';
+
 describe('CRUD operations tests for TODO', () => {
-  it('Should passed', () => {});
+  before(async () => {
+    await fixture.initialize();
+  });
+
+  beforeEach(async () => {
+    // Drop
+    // TRUNCATE TABLE TodoModels
+  });
+
+  it('Should passed', async () => {
+    // Arrange
+    const {app} = fixture;
+
+    const todo = new Todo(
+      UUIDGenerator.generateUUID(),
+      'Test title',
+      new Timestamp(),
+      new Timestamp(),
+      'Test description'
+    );
+
+    await fixture.executeQuery(
+      `INSERT INTO TodoModels ('uniqueID', 'title', 'description',
+'creationDate', 'lastUpdatedAt') VALUES (?, ?, ?, ?, ?)`,
+      {
+        replacements: [
+          todo.id,
+          todo.title,
+          todo.description,
+          todo.creationDate.toString(),
+          todo.lastUpdated.toString(),
+        ],
+      }
+    );
+
+    // Act
+    await request(app)
+      .get('/todo')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect(response => {
+        const content = response.body.todos;
+
+        // Assert
+        expect(content).to.be.an('array');
+        expect(content).to.have.length(1);
+        expect(content[0]).to.haveOwnProperty('id', todo.id);
+        expect(content[0]).to.haveOwnProperty('title', todo.title);
+        expect(content[0]).to.haveOwnProperty('description', todo.description);
+        expect(content[0]).to.haveOwnProperty(
+          'creationDate',
+          todo.creationDate.toString()
+        );
+        expect(content[0]).to.haveOwnProperty(
+          'lastUpdated',
+          todo.lastUpdated.toString()
+        );
+      });
+  });
 });
-
-/*
- * For testing updation
- * Migrate db with well known db
- */
-
-/*
- * For testing deletion
- * just delete
- */
-/**
-
-drop database if exists people;
-create database if not exists people;
-use people;
-
-create table Person
-(
-    id    int primary key auto_increment,
-    name  varchar(50)  not null,
-    email varchar(100) not null
-
-);
-
-query çalıştır : her testten önce beforeEach sil oluştur vb.
-
-https://sequelize.org/docs/v6/core-concepts/raw-queries/
-
-github ci ortamında test etmek için:
-
-  */
