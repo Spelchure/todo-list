@@ -5,6 +5,42 @@ import {Timestamp} from '@/shared/timestamp';
 import {Todo} from '@/todo/domain/todo';
 import {expect} from 'chai';
 
+const insertFakeTodo = async () => {
+  const todo = new Todo(
+    UUIDGenerator.generateUUID(),
+    'Test title',
+    new Timestamp(),
+    new Timestamp(),
+    'Test description'
+  );
+
+  await fixture.executeQuery(
+    `INSERT INTO TodoModels ('uniqueID', 'title', 'description',
+'creationDate', 'lastUpdatedAt') VALUES (?, ?, ?, ?, ?)`,
+    {
+      replacements: [
+        todo.id,
+        todo.title,
+        todo.description,
+        todo.creationDate.toString(),
+        todo.lastUpdated.toString(),
+      ],
+    }
+  );
+
+  // Ensure todo inserted to DB.
+  const insertedTodo = await fixture.executeQuery(
+    'SELECT uniqueID FROM TodoModels WHERE uniqueID = ?',
+    {
+      replacements: [todo.id],
+    }
+  );
+  expect(insertedTodo[0]).to.be.an('array').to.have.lengthOf(1);
+  expect(insertedTodo[0][0]).to.haveOwnProperty('uniqueID', todo.id);
+
+  return todo;
+};
+
 describe('CRUD operations tests for TODO', () => {
   before(async () => {
     await fixture.initialize();
@@ -18,27 +54,7 @@ describe('CRUD operations tests for TODO', () => {
     // Arrange
     const {app} = fixture;
 
-    const todo = new Todo(
-      UUIDGenerator.generateUUID(),
-      'Test title',
-      new Timestamp(),
-      new Timestamp(),
-      'Test description'
-    );
-
-    await fixture.executeQuery(
-      `INSERT INTO TodoModels ('uniqueID', 'title', 'description',
-'creationDate', 'lastUpdatedAt') VALUES (?, ?, ?, ?, ?)`,
-      {
-        replacements: [
-          todo.id,
-          todo.title,
-          todo.description,
-          todo.creationDate.toString(),
-          todo.lastUpdated.toString(),
-        ],
-      }
-    );
+    const todo = await insertFakeTodo();
 
     // Act
     await request(app)
@@ -96,4 +112,34 @@ describe('CRUD operations tests for TODO', () => {
     expect(createdTodo[0][0]).to.haveOwnProperty('description', description);
     expect(createdTodo[0][0]).to.haveOwnProperty('uniqueID', id);
   });
+  it('DELETE /todo should delete corresponding todo', async () => {
+    // Arrange
+    const {app} = fixture;
+
+    const fakeTodo = await insertFakeTodo();
+
+    // FIX: We may should not test multiple situations
+
+    // Act
+    const response = await request(app)
+      .delete('/todo')
+      .send({id: fakeTodo.id})
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    // Assert
+    const {deletedTodo} = response.body;
+
+    expect(deletedTodo).to.haveOwnProperty('id', fakeTodo.id);
+    expect(deletedTodo).to.haveOwnProperty('title', fakeTodo.title);
+    expect(deletedTodo).to.haveOwnProperty('description', fakeTodo.description);
+
+    const queryResult = await fixture.executeQuery(
+      'SELECT * FROM TodoModels WHERE uniqueID = ?',
+      {replacements: [fakeTodo.id]}
+    );
+
+    expect(queryResult[0]).to.be.an('array').to.have.lengthOf(0);
+  });
+  // TODO: DELETE /todo should return not found if Todo not exists
 });
