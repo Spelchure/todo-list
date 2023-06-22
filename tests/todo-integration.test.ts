@@ -142,4 +142,46 @@ describe('CRUD operations tests for TODO', () => {
     expect(queryResult[0]).to.be.an('array').to.have.lengthOf(0);
   });
   // TODO: DELETE /todo should return not found if Todo not exists
+
+  it('PUT /todo should update todo', async () => {
+    // Arrange
+    const {app} = fixture;
+
+    const fakeTodo = await insertFakeTodo();
+
+    const updatedTitle = fakeTodo.title + ' updated the title.';
+    const updatedDescription = fakeTodo.title + ' updated the description.';
+
+    // Act
+    const response = await request(app)
+      .put('/todo')
+      .send({
+        id: fakeTodo.id,
+        title: updatedTitle,
+        description: updatedDescription,
+      })
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    const {updatedTodo} = response.body;
+
+    // Assert
+    expect(updatedTodo).to.haveOwnProperty('id', fakeTodo.id);
+    expect(updatedTodo).to.haveOwnProperty('title', updatedTitle);
+    expect(updatedTodo).to.haveOwnProperty('description', updatedDescription);
+
+    // FIX: We may should not test multiple situations
+
+    const queryResult = await fixture.executeQuery(
+      'SELECT * FROM TodoModels WHERE uniqueID = ?',
+      {replacements: [fakeTodo.id]}
+    );
+
+    expect(queryResult[0]).to.be.an('array').to.have.lengthOf(1);
+    expect(queryResult[0][0]).to.haveOwnProperty('title', updatedTitle);
+    expect(queryResult[0][0]).to.haveOwnProperty(
+      'description',
+      updatedDescription
+    );
+  });
 });
