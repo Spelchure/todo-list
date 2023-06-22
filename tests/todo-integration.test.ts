@@ -11,11 +11,10 @@ describe('CRUD operations tests for TODO', () => {
   });
 
   beforeEach(async () => {
-    // Drop
-    // TRUNCATE TABLE TodoModels
+    //await fixture.executeQuery('TRUNCATE TABLE TodoModels;');
   });
 
-  it('Should passed', async () => {
+  it('Get /todo should return all todos', async () => {
     // Arrange
     const {app} = fixture;
 
@@ -64,5 +63,37 @@ describe('CRUD operations tests for TODO', () => {
           todo.lastUpdated.toString()
         );
       });
+  });
+  it('POST /todo should create corresponding todo', async () => {
+    // Arrange
+    const {app} = fixture;
+    const title = 'My Todo Title';
+    const description = 'My Todo Description';
+
+    // FIX: We may should not test multiple situations
+
+    // Act
+    const response = await request(app)
+      .post('/todo')
+      .send({title, description})
+      .expect('Content-Type', /json/)
+      .expect(201);
+
+    // Assert
+    const content = response.body.created;
+    const id = content.id;
+
+    expect(content.title).to.be.equal(title);
+    expect(content.description).to.be.equal(description);
+
+    const createdTodo = await fixture.executeQuery(
+      'SELECT * FROM TodoModels WHERE uniqueID = ?',
+      {replacements: [id]}
+    );
+
+    expect(createdTodo[0]).to.be.an('array').to.have.lengthOf(1);
+    expect(createdTodo[0][0]).to.haveOwnProperty('title', title);
+    expect(createdTodo[0][0]).to.haveOwnProperty('description', description);
+    expect(createdTodo[0][0]).to.haveOwnProperty('uniqueID', id);
   });
 });
