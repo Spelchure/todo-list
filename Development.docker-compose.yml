@@ -5,5 +5,33 @@ services:
     build:
       context: .
       dockerfile: Development.dockerfile
+      args:
+        DB_INITDB: ${DB_INITDB}
+        DB_USERNAME: ${DB_USERNAME}
+        DB_PASSWORD: ${DB_PASSWORD}
+        DB_PORT: ${DB_PORT}
+        DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+
     ports:
       - '${PORT}:8080'
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_INITDB}
+    ports:
+      - '${DB_PORT}:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data: {}

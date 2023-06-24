@@ -5,6 +5,11 @@ declare global {
       NODE_ENV: 'development' | 'production' | 'test';
       CERT_FILE: string;
       PRIVKEY_FILE: string;
+      DB_USERNAME: string;
+      DB_PASSWORD: string;
+      DB_INITDB: string;
+      DB_PORT: number;
+      DB_HOST: string;
     }
   }
 }

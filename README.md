@@ -12,6 +12,7 @@ Please define your variables in `.env` according to `.env.example`
 
 ```sh
 npm run dev
+# Don't forget to set the DB_* parameters and start the postgres
 ```
 
 ### Running in Development with `Docker Compose`
@@ -64,6 +65,15 @@ curl -k -X GET https://<minikube-ip-address>:30100/todo
 
 ```
 npm run lint
+```
+
+## Notes
+
+### For running only postgres from compose:
+
+```sh
+docker compose -f Development.docker-compose.yml up db -d
+psql -h localhost -U <username> <db>
 ```
 
 ## Tools/Technologies Used
