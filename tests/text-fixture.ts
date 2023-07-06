@@ -19,9 +19,8 @@ class TextFixture {
   }
 
   public async initialize() {
-    //await sequelize.query('DROP DATABASE IF NOT EXISTS testdb');
-    //usedb testdb
     await sequelize.sync();
+    await this.executeQuery('TRUNCATE TABLE public."TodoModels"');
   }
 
   public async executeQuery(query: string, params?: QueryOptions) {

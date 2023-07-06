@@ -12,7 +12,7 @@
     "prepare": "husky install",
     "clean:dev": "rimraf build",
     "clean:prod": "rimraf dist",
-    "test:integration": "docker compose -f mocha --check-leaks -r tsconfig-paths/register -r ts-node/register tests/*.test.ts"
+    "test:integration": "mocha --check-leaks -r tsconfig-paths/register -r ts-node/register tests/*.test.ts"
   },
   "keywords": [],
   "author": "",

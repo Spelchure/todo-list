@@ -15,8 +15,8 @@ const insertFakeTodo = async () => {
   );
 
   await fixture.executeQuery(
-    `INSERT INTO TodoModels ('uniqueID', 'title', 'description',
-'creationDate', 'lastUpdatedAt') VALUES (?, ?, ?, ?, ?)`,
+    `INSERT INTO public."TodoModels"("uniqueID", "title", "description",
+"creationDate", "lastUpdatedAt") VALUES (?, ?, ?, ?, ?);`,
     {
       replacements: [
         todo.id,
@@ -30,7 +30,7 @@ const insertFakeTodo = async () => {
 
   // Ensure todo inserted to DB.
   const insertedTodo = await fixture.executeQuery(
-    'SELECT uniqueID FROM TodoModels WHERE uniqueID = ?',
+    'SELECT "uniqueID" FROM public."TodoModels" WHERE "uniqueID" = ?',
     {
       replacements: [todo.id],
     }
@@ -103,7 +103,7 @@ describe('CRUD operations tests for TODO', () => {
     expect(content.description).to.be.equal(description);
 
     const createdTodo = await fixture.executeQuery(
-      'SELECT * FROM TodoModels WHERE uniqueID = ?',
+      'SELECT * FROM public."TodoModels" WHERE "uniqueID" = ?',
       {replacements: [id]}
     );
 
@@ -135,7 +135,7 @@ describe('CRUD operations tests for TODO', () => {
     expect(deletedTodo).to.haveOwnProperty('description', fakeTodo.description);
 
     const queryResult = await fixture.executeQuery(
-      'SELECT * FROM TodoModels WHERE uniqueID = ?',
+      'SELECT * FROM public."TodoModels" WHERE "uniqueID" = ?',
       {replacements: [fakeTodo.id]}
     );
 
@@ -173,7 +173,7 @@ describe('CRUD operations tests for TODO', () => {
     // FIX: We may should not test multiple situations
 
     const queryResult = await fixture.executeQuery(
-      'SELECT * FROM TodoModels WHERE uniqueID = ?',
+      'SELECT * FROM public."TodoModels" WHERE "uniqueID" = ?',
       {replacements: [fakeTodo.id]}
     );
 
