@@ -61,6 +61,14 @@ minikube ip
 curl -k -X GET https://<minikube-ip-address>:30100/todo
 ```
 
+### Test
+
+Only integration tests are available. For running integration tests:
+
+```sh
+./scripts/integration-test.sh
+```
+
 ### Lint
 
 ```
