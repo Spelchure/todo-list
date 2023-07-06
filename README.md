@@ -75,13 +75,3 @@ npm run lint
 docker compose -f Development.docker-compose.yml up db -d
 psql -h localhost -U <username> <db>
 ```
-
-## Tools/Technologies Used
-
-- Dependency Injection with _inversify.js_
-- Domain Driven Design
-- Hexagonal Architecture
-- Webpack, WebpackShellPlugin, WebpackNodeExternals
-- Dotenv
-- Docker, Docker Compose
-- Minikube, K8S
