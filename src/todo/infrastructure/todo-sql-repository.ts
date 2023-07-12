@@ -7,9 +7,8 @@ import {Timestamp} from '@/shared/timestamp';
 import assert from 'assert';
 import {EntityNotFoundError} from '@/shared/error/error';
 
-// FIX: this is know postgresql repository change it to SqlRepository
 @injectable()
-export class SqliteRepository implements ITodoRepository {
+export class SqlRepository implements ITodoRepository {
   public nextIdentity() {
     return UUIDGenerator.generateUUID() as TodoUniqueID;
   }

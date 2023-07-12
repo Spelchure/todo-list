@@ -1,7 +1,7 @@
 import {Container} from 'inversify';
 import TodoApplicationService from './todo/application/todo-app-service';
 import ITodoRepository from './todo/domain/todo-repository';
-import {SqliteRepository} from './todo/infrastructure/todo-sqlite-repository';
+import {SqlRepository} from './todo/infrastructure/todo-sql-repository';
 import TYPES from './types';
 import Configuration from './configuration';
 import {Logging} from './shared/logging';
@@ -16,7 +16,7 @@ container
 
 container
   .bind<ITodoRepository>(TYPES.ITodoRepository)
-  .to(SqliteRepository)
+  .to(SqlRepository)
   .inSingletonScope();
 
 container
