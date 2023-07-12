@@ -47,7 +47,7 @@ describe('CRUD operations tests for TODO', () => {
   });
 
   beforeEach(async () => {
-    //await fixture.executeQuery('TRUNCATE TABLE TodoModels;');
+    await fixture.executeQuery('TRUNCATE TABLE public."TodoModels";');
   });
 
   it('Get /todo should return all todos', async () => {
@@ -183,5 +183,28 @@ describe('CRUD operations tests for TODO', () => {
       'description',
       updatedDescription
     );
+  });
+
+  it('GET /todo with pagination should paginate and respect page & pageSize', async () => {
+    // Arrange
+    const {app} = fixture;
+
+    const fakeTodoFirst = await insertFakeTodo();
+    await insertFakeTodo();
+    await insertFakeTodo();
+
+    // Act
+    const response = await request(app)
+      .get('/todo')
+      .query({page: 0, pageSize: 1})
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    const {todos} = response.body;
+
+    // Assert
+    expect(todos).to.have.lengthOf(1);
+    // FIX: Multiple assertions are an anti-pattern
+    expect(todos[0].id).to.equal(fakeTodoFirst.id);
   });
 });

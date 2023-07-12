@@ -41,11 +41,14 @@ export class TodoController implements interfaces.Controller {
 
   @httpGet('/')
   private async index(
-    @request() _: Request,
+    @request() req: Request,
     @response() res: Response,
     @next() __: NextFunction
   ) {
-    const allTodos = await this.todoService.listAll();
+    const allTodos = await this.todoService.listAll(
+      req.query.page as string | undefined,
+      req.query.pageSize as string | undefined
+    );
     const serialized = allTodos.map(todo =>
       this.todoService.serializeTodo(todo)
     );

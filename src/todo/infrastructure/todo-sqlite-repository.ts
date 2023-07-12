@@ -7,6 +7,7 @@ import {Timestamp} from '@/shared/timestamp';
 import assert from 'assert';
 import {EntityNotFoundError} from '@/shared/error/error';
 
+// FIX: this is know postgresql repository change it to SqlRepository
 @injectable()
 export class SqliteRepository implements ITodoRepository {
   public nextIdentity() {
@@ -15,6 +16,19 @@ export class SqliteRepository implements ITodoRepository {
 
   public async getAll(): Promise<Todo[]> {
     const todos = await TodoModel.findAll();
+    return todos.map(this._convertTodoModelToTodo);
+  }
+
+  public async getAllWithPagination(
+    page: number,
+    pageSize: number
+  ): Promise<Todo[]> {
+    // assert(page > 0, pageSize > 0 )
+    const offset = page * pageSize;
+    const limit = pageSize;
+
+    const todos = await TodoModel.findAll({limit, offset});
+
     return todos.map(this._convertTodoModelToTodo);
   }
 

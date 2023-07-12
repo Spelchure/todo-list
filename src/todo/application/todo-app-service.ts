@@ -12,10 +12,18 @@ export default class TodoApplicationService {
     @inject(TYPES.Logging) private _logger: Logging
   ) {}
 
-  public async listAll() {
+  public async listAll(page?: string, pageSize?: string) {
     this._logger.logInfo('Listing all');
+    if (page !== undefined && pageSize !== undefined) {
+      const _page = parseInt(page);
+      const _pageSize = parseInt(pageSize);
+      if (_page >= 0 && _pageSize > 0) {
+        return await this.todoRepository.getAllWithPagination(_page, _pageSize);
+      }
+    }
     return await this.todoRepository.getAll();
   }
+
   public async createNew(title: string, description: string) {
     const todoId = this.todoRepository.nextIdentity();
     const todo = new Todo(
