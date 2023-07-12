@@ -1,0 +1,17 @@
+---
+auth:
+  username: 'admin'
+  password: '123'
+
+primary:
+  persistence:
+    enabled: true
+    existingClaim: 'postgresql-data-claim'
+  initdb:
+    scripts:
+      init.sql: |
+        DROP DATABASE IF EXISTS todos;
+        CREATE DATABASE todos WITH OWNER admin;
+
+volumePermissions:
+  enabled: true

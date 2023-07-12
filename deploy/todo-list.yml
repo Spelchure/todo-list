@@ -21,13 +21,16 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: todo-config-map
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: todo-list-service
 spec:
-  type: NodePort    # Do not use in production
+  type: NodePort # Do not use in production
   selector:
     app: todo-list
   ports:

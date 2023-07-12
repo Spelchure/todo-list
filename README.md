@@ -54,6 +54,14 @@ docker build -f Production.dockerfile . -t todo-list \
   --build-arg="CERT_FILE_PATH=cert.pem" \
   --build-arg="PRIVKEY_FILE_PATH=cert_priv.pem"
 # Apply k8s configuration
+# Create a PV
+kubectl apply -f deploy/data-pv.yml
+# Create a PVC
+kubectl apply -f deploy/data-pvc.yml
+# Run Postgres with HELM
+# Update deploy/postgre-values.yml for your needs
+helm install db -f deploy/postgre-values.yml bitnami/postgresql
+# Create the Deployment
 kubectl create -f deploy/todo-list.yml
 # Get minikube ip address
 minikube ip

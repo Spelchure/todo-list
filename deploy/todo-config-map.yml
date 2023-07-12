@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: todo-config-map
+  labels:
+    app: todo-list
+data: # Same as postgre-values.yml
+  DB_INITDB: todos
+  DB_USERNAME: admin
+  DB_PASSWORD: '123'
+  DB_HOST: db-postgresql
+  DB_PORT: '5432'
