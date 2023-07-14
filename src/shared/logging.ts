@@ -1,5 +1,6 @@
 import {injectable} from 'inversify';
 import winston, {format} from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
 
 export type LogMessage = string;
 
@@ -13,9 +14,8 @@ export enum LogLevel {
 @injectable()
 export class Logging {
   private _prefix: string;
-  private static _appName = 'TodoList';
-  private static _logFilePath = './logs.json';
   private _logger: winston.Logger;
+  private static _appName = 'TodoList';
 
   constructor(prefix = '') {
     this._prefix = prefix;
@@ -43,28 +43,12 @@ export class Logging {
 
   private _initializeWinston() {
     const logger = winston.createLogger({
-      transports: Logging._getTransports(Logging._logFilePath),
+      transports: Logging._getTransports(),
     });
     return logger;
   }
 
-  private static _getFormat() {
-    return this._getFormatterByEnvironment();
-  }
-
-  private static _getFormatterByEnvironment() {
-    let formats = [format.timestamp()];
-
-    if (process.env.NODE_ENV !== 'production') {
-      formats = [...formats];
-      formats = [...formats, format.json()];
-    } else {
-      formats = [...formats];
-    }
-    return winston.format.combine(...formats);
-  }
-
-  private static _getTransports(logFilePath: string) {
+  private static _getTransports() {
     const transports: Array<any> = [
       new winston.transports.Console({
         format: this._getFormatForConsole(),
@@ -72,12 +56,7 @@ export class Logging {
     ];
 
     if (process.env.NODE_ENV !== 'production') {
-      transports.push(
-        new winston.transports.File({
-          filename: logFilePath,
-          format: this._getFormatForFile(),
-        })
-      );
+      transports.push(this._getFileTransport());
     }
 
     return transports;
@@ -90,18 +69,24 @@ export class Logging {
         info =>
           `[${info.timestamp}] [${info.level.toUpperCase()}]: ${info.message}`
       ),
-      format.colorize({all: true}) // FIX: set specific colors.
+      format.colorize({all: true})
     );
   }
 
-  private static _getFormatForFile() {
-    return format.combine(
-      format.timestamp(),
-      format(info => {
-        info.app = this._appName;
-        return info;
-      })(),
-      format.json()
-    );
+  private static _getFileTransport() {
+    return new DailyRotateFile({
+      filename: `${Logging._appName}-%DATE%.log`,
+      zippedArchive: true, // Compress gzip
+      maxSize: '10m', // Rotate after 10MB
+      maxFiles: '14d', // Only keep last 14 days
+      format: format.combine(
+        format.timestamp(),
+        format(info => {
+          info.app = this._appName;
+          return info;
+        })(),
+        format.json()
+      ),
+    });
   }
 }
