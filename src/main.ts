@@ -16,7 +16,9 @@ const startServer = async () => {
   const app = createRestApplication(config);
 
   app.listen(port);
-  logger.logInfo(`App listening on port: ${port}`);
+  logger.logInfo('Application is started to listen', {
+    port,
+  });
 };
 
 startServer();
