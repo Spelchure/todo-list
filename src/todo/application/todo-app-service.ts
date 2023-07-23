@@ -13,7 +13,6 @@ export default class TodoApplicationService {
   ) {}
 
   public async listAll(page?: string, pageSize?: string) {
-    this._logger.logInfo('Listing all');
     if (page !== undefined && pageSize !== undefined) {
       const _page = parseInt(page);
       const _pageSize = parseInt(pageSize);
