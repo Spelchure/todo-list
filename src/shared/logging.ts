@@ -55,7 +55,7 @@ export class Logging {
       }),
     ];
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV === 'production') {
       transports.push(this._getFileTransport());
     }
 
