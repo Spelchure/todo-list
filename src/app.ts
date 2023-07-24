@@ -8,6 +8,7 @@ import container from './container';
 import Configuration from 'configuration';
 import {exit} from 'node:process';
 import compression from 'compression';
+import helmet from 'helmet';
 
 const readCredentials = (certfile: string, privkey: string) => {
   const cert = fs.readFileSync(certfile, 'utf8');
@@ -19,6 +20,9 @@ const readCredentials = (certfile: string, privkey: string) => {
 export default function createRestApplication(config: Configuration) {
   const server = new InversifyExpressServer(container);
   server.setConfig(app => {
+    if (process.env.NODE_ENV === 'production') {
+      app.use(helmet());
+    }
     app.use(compression());
     app.use(cors());
     app.use(bodyParser.json());
