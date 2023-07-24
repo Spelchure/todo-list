@@ -7,6 +7,7 @@ import errorHandler from './error-handler';
 import container from './container';
 import Configuration from 'configuration';
 import {exit} from 'node:process';
+import compression from 'compression';
 
 const readCredentials = (certfile: string, privkey: string) => {
   const cert = fs.readFileSync(certfile, 'utf8');
@@ -18,6 +19,7 @@ const readCredentials = (certfile: string, privkey: string) => {
 export default function createRestApplication(config: Configuration) {
   const server = new InversifyExpressServer(container);
   server.setConfig(app => {
+    app.use(compression());
     app.use(cors());
     app.use(bodyParser.json());
   });
